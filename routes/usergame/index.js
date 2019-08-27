@@ -1,45 +1,45 @@
-var fs = require('fs');
-var path = require('path');
-let routerMap = new Map();
-
 class UserGame {
     constructor() {
         console.log("UserGame constructor");
     }
 }
 
+UserGame.prototype.listen = async function(App) {
+    let file_list = [];
+    let base_dir = __dirname + "\\.."
 
-UserGame.prototype.listen = async function(app) {
-    // 해당 폴더 내에 있는 파일들을 다 불러옴
-    let files = fs.readdirSync(__dirname);
+    App.custom_util.path_util.get_file_list(file_list, base_dir);
+
+    let route_list = App.custom_util.path_util.get_route_url_from_file_list(base_dir, file_list);
     
-    console.log(files);
+    route_list.forEach((route) => {
+        let mod = require(route.filename);
 
-    for ( var i in files ) {
-        let file = files[i];
+        let url = route.route_url = route.route_url.replace(/\\/g, '/');
 
-        if ( file =='index.js') continue;
-        let mod = require(__dirname + '/' + file);
-        console.log(mod);
-        mod();
-    }
-    path.join('')
+        App.Aop.around("initialize", function(target_info) {
+            let route = App.Aop.next(target_info);
 
-    let route_key = routerMap.keys();
-    for ( var i in route_key ) {
-        
-        let route = route_key[i];
-        app.get(route, (req, res) =>{ 
-            commonRoutes(routerMap.fn, req, res);
-        });
-    }
+            //route.set_db_manager(db_manager);
+            //route.set_log_manager(log_manager);
+
+            App.Aop.around("route", App.db_manager.advice, route);
+            //App.Aop.around("route", App.log_manager.advice, route);
+
+            App.app.post(url, route.route);
+            
+        }, mod)
+
+        mod.initialize();
+    });
+
 }
 
 UserGame.prototype.commonRoutes = function (logic, req, res) {
     // before
     // dbManager.getConnection();
     try {
-        logic(req, res);
+        //logic(req, res);
         // dbManager.commit();
     } 
     catch (error) {
