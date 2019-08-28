@@ -1,51 +1,66 @@
-class UserGame {
-    constructor() {
-        console.log("UserGame constructor");
-    }
-}
 
-UserGame.prototype.listen = async function(App) {
-    let file_list = [];
-    let base_dir = __dirname + "\\.."
+let UserGame = {} 
 
-    App.custom_util.path_util.get_file_list(file_list, base_dir);
-
-    let route_list = App.custom_util.path_util.get_route_url_from_file_list(base_dir, file_list);
+UserGame.route = function(_App) {
+    var App = _App;
     
-    route_list.forEach((route) => {
-        let mod = require(route.filename);
+    return {
+        set_route: function(_mod) {
+            let mod_object = _mod;
 
-        let url = route.route_url = route.route_url.replace(/\\/g, '/');
+            // 로그 처리
+            App.Aop.around("mod", App.log_manager.route_advice, mod_object);
 
-        App.Aop.around("initialize", function(target_info) {
-            let route = App.Aop.next(target_info);
+            // 세선 처리
+            //App.Aop.around("mod", App.log_manager.route_advice, mod_object);
 
-            //route.set_db_manager(db_manager);
-            //route.set_log_manager(log_manager);
-
-            App.Aop.around("route", App.db_manager.advice, route);
-            //App.Aop.around("route", App.log_manager.advice, route);
-
-            App.app.post(url, route.route);
+            App.Aop.around("before", App.db_manager.before, mod_object);
             
-        }, mod)
+            // 디비 처리
+            App.Aop.around("mod", App.db_manager.advice, mod_object);
 
-        mod.initialize();
-    });
-
+            return {
+                route: async function(req, res) {
+                    mod_object.req = req;
+                    mod_object.res = res;
+                    
+                    return await mod_object.mod(req,res);
+                }
+            }    
+        }
+    }
 }
 
-UserGame.prototype.commonRoutes = function (logic, req, res) {
-    // before
-    // dbManager.getConnection();
-    try {
-        //logic(req, res);
-        // dbManager.commit();
-    } 
-    catch (error) {
-        // dbManager.rollback();
+UserGame.service = function(_App, _route){
+    var App = _App;
+    var Router = _route;
+
+    return {
+        listen: function() {
+            let file_list = [];
+            let base_dir = __dirname + "\\.."
+
+            App.custom_util.path_util.get_file_list(file_list, base_dir);
+
+            let route_list = App.custom_util.path_util.get_route_url_from_file_list(base_dir, file_list);
+
+            route_list.forEach((route) => {
+
+                let mod = require(route.filename);
+
+                let mod_object = {};
+                mod_object.mod = mod.route;
+                mod_object.before = mod.before;
+
+                let _route = Router.set_route(mod_object);
+                
+                let url = route.route_url = route.route_url.replace(/\\/g, '/');
+
+                App.app.post(url, _route.route);
+
+            });
+        }
     }
-    // after
 }
 
 module.exports.UserGame = UserGame;

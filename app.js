@@ -12,8 +12,6 @@ App.custom_util = require("./custom_util");
 
 const UserGame = require('./routes/usergame').UserGame;
 
-let usergame = new UserGame().listen(App);
-
-app.get('/', (req, res) => res.send('Hello World!'));
+UserGame.service(App, UserGame.route(App)).listen();
 
 app.listen(port,() => console.log(`Example app listening on port ${port}!`));
