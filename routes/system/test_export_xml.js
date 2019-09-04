@@ -67,7 +67,7 @@ test_export_xml = {
         
         //fs.writeFileSync(process.env.ROOT_PATH + '\\temp\\title_data.xml', xml, 'utf8');
         
-        fs.writeFileSync(process.env.ROOT_PATH + '\\temp\\title_data.json', JSON.stringify(temp,null,'\t'), 'utf8');
+        fs.writeFileSync(process.env.ROOT_PATH + '\\output_folder\\title_data\\title_data.json', JSON.stringify(temp,null,'\t'), 'utf8');
         //fs.writeFileSync(process.env.ROOT_PATH + '\\temp\\title_data.json', JSON.stringify(ret_json_data,null,'\t'), 'utf8');
         
 

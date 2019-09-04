@@ -1,2 +1,6 @@
 node_modules/
 temp/
+*.bat
+*.sh
+!/sample_script/*.bat
+!/sample_script/*.sh

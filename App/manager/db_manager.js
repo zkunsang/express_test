@@ -46,7 +46,7 @@ var db_manager = {
             this.db_pool[key] = mysql.createPool(db_config[key]);
         })
         
-        console.log(this);
+        // console.log(this);
     },
 
     after: function() {

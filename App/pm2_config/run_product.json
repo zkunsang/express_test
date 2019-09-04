@@ -1,0 +1,12 @@
+{
+  "apps" : [{
+    "name"        : "server",
+    "script"      : "works\\apps\\restful-server\\app.js",
+    "watch"       : true,
+    "exec_mode" : "cluster",
+    "instances" : 1,
+    "env": {
+      "NODE_ENV" : "production"
+    }
+  }]
+}

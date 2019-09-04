@@ -1,4 +1,3 @@
-var builder = require('xmlbuilder');
 var fs = require('fs');
 
 let s3_config = require('../../App/s3_config');

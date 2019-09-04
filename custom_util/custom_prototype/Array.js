@@ -95,4 +95,3 @@ Object.defineProperties(Array.prototype, {
     },
 });
 
-module.exports = true;
