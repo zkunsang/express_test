@@ -4,9 +4,13 @@ var log_manager = {
         return {
             route_advice: async function(target_info) {
                 this.log_object = log_manager.create_log_object();
+
                 log_manager.route_before_log.call(this.log_object, this.req.body);
+
                 let result = Aop.next.call(this, target_info);
+
                 log_manager.route_after_log.call(this.log_object, this.req.body);
+                
                 return result;
             },
         }

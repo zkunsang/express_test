@@ -10,8 +10,10 @@ var db_manager = {
 
                 for(var i in db_list) {
                     let db = db_list[i];
+                    
                     let db_name = db.db_name;
                     let db_transaction = db.db_transaction;
+
                     let db_pool = db_manager.db_pool[db_name];
                     let connection = await db_pool.getConnection();
 

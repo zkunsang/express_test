@@ -1,7 +1,6 @@
+let Router = {} 
 
-let UserGame = {} 
-
-UserGame.route = function(_App) {
+Router.route = function(_App) {
     var App = _App;
     
     return {
@@ -31,14 +30,14 @@ UserGame.route = function(_App) {
     }
 }
 
-UserGame.service = function(_App, _route){
+Router.service = function(_App, _route){
     var App = _App;
     var Router = _route;
 
     return {
         listen: function() {
             let file_list = [];
-            let base_dir = __dirname + "\\.."
+            let base_dir = __dirname;
 
             App.custom_util.path_util.get_file_list(file_list, base_dir);
 
@@ -63,4 +62,4 @@ UserGame.service = function(_App, _route){
     }
 }
 
-module.exports.UserGame = UserGame;
+module.exports.Router = Router;

@@ -10,8 +10,8 @@ App.app = app;
 
 App.custom_util = require("./custom_util");
 
-const UserGame = require('./routes/usergame').UserGame;
+const Router = require('./routes').Router;
 
-UserGame.service(App, UserGame.route(App)).listen();
+Router.service(App, Router.route(App)).listen();
 
 app.listen(port,() => console.log(`Example app listening on port ${port}!`));
