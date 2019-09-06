@@ -1,4 +1,4 @@
-var mysql_import = require('mysql-import');
+var mysqldump = require('mysqldump');
 
 var fs = require('fs');
 
@@ -10,7 +10,6 @@ test_mysql_export = {
         ]
     },
     route: async function( req, res) {
-
         let date = new Date();
 
         let node_env = process.env.NODE_ENV;
@@ -26,23 +25,28 @@ test_mysql_export = {
     
         let game_export_name = 'game_' + date.$getDateFormat() + "_" + date.$getTimeFormat() + ".sql";
         try {
-            mysql_import.config(
-                {
+            let result = await mysqldump({
+                connection: {
                     host: source_game_config.host,
                     user: source_game_config.user,
                     password: source_game_config.password,
                     database: source_game_config.database,
-                    onerror: function(err) {
-                        
-                        console.log(err.message)
+                },
+                dump: {
+                    schema : {
+                        autoIncrement: false,
+                        table : {
+                            ifNotExist: false,
+                            dropIfExist: true,
+                        }
                     }
-                }                
-            ).import(process.env.ROOT_PATH + "\\game_20190904_130022.sql").then(()=> {
-                console.log('all statements have been executed')
-            })
+                },
+
+                dumpToFile: process.env.ROOT_PATH + '\\output_folder\\export_mysql\\' + game_export_name,
+            });
             
-            
-            res.send("hello!")
+            this.log_object.archive_log(result);
+            res.send("completed");
         }
         catch( err ) {
             console.error(err);

@@ -4,7 +4,7 @@ var fs = require('fs');
 test_export_xml = {
     before: function() {
         return [
-            {db_name:"game", db_transaction: true}
+            {db_name:"game", db_transaction: false}
         ]
     },
     route: async function( req, res) {

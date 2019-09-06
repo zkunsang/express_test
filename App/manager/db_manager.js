@@ -28,7 +28,7 @@ var db_manager = {
             advice: async function(target_info) {
                 await this.before();
                 let result = await Aop.next.call(this, target_info);
-                db_manager.after.call(this);
+                await db_manager.after.call(this);
                 return result;
             },
         }
@@ -50,19 +50,25 @@ var db_manager = {
     },
 
     after: function() {
-        if ( this.error == false || this.error == undefined ) {
-            Object.keys(this.db_list).forEach(async(db) => {
-                let connection = this.db_list[db].con;
-                await connection.commit();
-                connection.release();
-            })
+        try {
+            if ( this.error == false || this.error == undefined ) {
+                Object.keys(this.db_list).forEach(async(db) => {
+                    let connection = this.db_list[db].con;
+                    await connection.commit();
+                    connection.release();
+                })
+            }
+            else {
+                Object.keys(this.db_list).forEach(async(db) => {
+                    let connection = this.db_list[db].con;
+                    await connection.rollback();
+                    connection.release();
+                })
+            
+            }
         }
-        else {
-            Object.keys(this.db_list).forEach(async(db) => {
-                let connection = this.db_list[db].con;
-                await connection.rollback();
-                connection.release();
-            })
+        catch (err) {
+            console.error(err);
         }
     },
 };

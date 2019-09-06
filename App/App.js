@@ -1,7 +1,7 @@
 let App = {
     initialize: function () {
         if (process.env.NODE_ENV == undefined) {
-            process.env.NODE_ENV = "local";
+            process.env.NODE_ENV = "debug";
         }
 
         process.env.ROOT_PATH = __dirname + "\\..";
