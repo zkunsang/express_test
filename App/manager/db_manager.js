@@ -54,14 +54,22 @@ var db_manager = {
             if ( this.error == false || this.error == undefined ) {
                 Object.keys(this.db_list).forEach(async(db) => {
                     let connection = this.db_list[db].con;
-                    await connection.commit();
+
+                    if ( this.db_list[db].transaction ) {
+                        await connection.commit();
+                    }
+
                     connection.release();
                 })
             }
             else {
                 Object.keys(this.db_list).forEach(async(db) => {
                     let connection = this.db_list[db].con;
-                    await connection.rollback();
+
+                    if ( this.db_list[db].transaction ) {
+                        await connection.rollback();
+                    }
+                    
                     connection.release();
                 })
             

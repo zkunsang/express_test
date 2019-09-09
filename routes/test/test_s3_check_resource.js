@@ -56,7 +56,7 @@ async function check_resource(db_game, log_object, s3_source) {
     let unlinked_resource_list = [];
     let missing_resource_list = [];
     for ( var i = 0 ; i < 100 ; i ++ ) {
-        let list_object_emitter = new event_emitter();
+        let list_object_emitter = new my_emitter();
         s3_source.listObjects({Bucket: s3_config.source.bucket, Prefix: String(i) + String('/')}, async function(err, data) {
             if( err ) {
                 log_object.archive_log("list_object error", err, err.stack);
@@ -110,7 +110,7 @@ async function check_title_resource(db_game, log_object, s3_source) {
     let title_list = (await db_game.query('select * from TITLE'))[0];
     let title_arranged_map = title_list.$toMap("thumb");
 
-    let list_object_emitter = new event_emitter();
+    let list_object_emitter = new my_emitter();
 
     // 타이틀 리소르를 확인
     s3_source.listObjects({Bucket: s3_config.source.bucket, Prefix: String('title/')}, async function(err, data) {
@@ -156,7 +156,7 @@ async function check_title_asset_resource(db_game, log_object, s3_source) {
     let title_asset_list = (await db_game.query('select * from RESOURCE_OF_TITLE'))[0];
     let title_asset_arranged_map = title_asset_list.$toMap("url");
 
-    let list_object_emitter = new event_emitter();
+    let list_object_emitter = new my_emitter();
 
     // 타이틀 리소르를 확인
     s3_source.listObjects({Bucket: s3_config.source.bucket, Prefix: String('title_asset/')}, async function(err, data) {

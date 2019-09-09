@@ -26,6 +26,7 @@ test_mysql_export = {
     
         let game_export_name = 'game_' + date.$getDateFormat() + "_" + date.$getTimeFormat() + ".sql";
         try {
+            // 특정 테이블 export
             mysqldump({
                 connection: {
                     host: source_game_config.host,
@@ -46,7 +47,7 @@ test_mysql_export = {
                     }
                 },
 
-                dumpToFile: process.env.ROOT_PATH + '\\output_folder\\export_mysql\\' + game_export_name,
+                dumpToFile: process.env.ROOT_PATH + '\\output_folder\\export_mysql\\'  + game_export_name,
             });
             
             

@@ -16,5 +16,7 @@ App.Aop = require('./Aop');
 App.db_manager = require('./manager/db_manager').initialize(App.Aop);
 App.log_manager = require('./manager/log_manager').initialize(App.Aop);
 App.s3_manager = require('./manager/s3_manager').initialize();
+App.file_manager = require('./manager/file_manager').initialize();
+
 
 module.exports = App;

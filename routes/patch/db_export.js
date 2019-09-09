@@ -20,7 +20,7 @@ test_mysql_export = {
             target_game_config = require(process.env.ROOT_PATH + '\\App\\db_config\\debug').game;
         }
         else if ( node_env == "debug") {
-
+            source_game_config = require(process.env.ROOT_PATH + '\\App\\db_config\\debug').game;
         }
     
         let game_export_name = 'game_' + date.$getDateFormat() + "_" + date.$getTimeFormat() + ".sql";
@@ -42,7 +42,7 @@ test_mysql_export = {
                     }
                 },
 
-                dumpToFile: process.env.ROOT_PATH + '\\output_folder\\export_mysql\\' + game_export_name,
+                dumpToFile: process.env.ROOT_PATH + '\\output_folder\\export_mysql\\' + node_env + '\\' + game_export_name,
             });
             
             this.log_object.archive_log(result);

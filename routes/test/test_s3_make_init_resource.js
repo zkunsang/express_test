@@ -19,7 +19,7 @@ function pad(num, size) {
 test_export_chapter = {
     before: function() {
         return [
-            {db_name:"game", db_transaction: true}
+            {db_name:"game", db_transaction: false}
         ]
     },
     route: async function( req, res) {
@@ -29,17 +29,7 @@ test_export_chapter = {
 
             var AWS = require('aws-sdk');
 
-            AWS.config.region = 'ap-northeast-2';
-
             var s3_source = new AWS.S3(s3_config.source);
-            var s3_target = new AWS.S3(s3_config.s3_target);
-
-            // 일반 리소스
-            let delete_file_list = [];
-
-            
-
-            
 
             let version = 'v' + String(pad(1,6));
             
@@ -56,15 +46,14 @@ test_export_chapter = {
                 table_map_key: 'url',
             });
             
-            /**
+            
             await make_common_resource(db_game, log_object, s3_source, {
                 table_query: 'select * from TITLE',
                 backup_folder: title_folder,
                 table_map_key: 'thumb',
                 prefix: 'title/'
             });
-            */
-
+            
             // 타이틀 어셋 리소스
 
             /**
@@ -87,7 +76,6 @@ test_export_chapter = {
         var file = fs.createWriteStream(process.env.ROOT_PATH + '/cdn_data/' + file_name);
         s3_source.getObject(options).createReadStream().pipe(file)
     }
-
 }
 
 module.exports = test_export_chapter;
