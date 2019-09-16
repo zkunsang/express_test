@@ -12,7 +12,7 @@ test_execute_script = {
             let mode = req.body.mode;
 
             if ( mode == "start" ) {
-                child_process.exec('D:\\DramaGameAPI\\ApiLegacy\\start_api_server.bat', function(error, stdout, stderr) {
+                child_process.exec('D:/DramaGameAPI/ApiLegacy/start_api_server.bat', function(error, stdout, stderr) {
                     console.log(error);
                     console.log(stdout);
                     console.log(stderr);
@@ -20,7 +20,7 @@ test_execute_script = {
                 });
             }
             else {
-                child_process.exec('D:\\DramaGameAPI\\ApiLegacy\\stop_api_server.bat', function(error, stdout, stderr) {
+                child_process.exec('D:/DramaGameAPI/ApiLegacy/stop_api_server.bat', function(error, stdout, stderr) {
                     console.log(error);
                     console.log(stdout);
                     console.log(stderr);

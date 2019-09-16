@@ -15,7 +15,7 @@ test_execute_script = {
             let operation = req.body.operation;
             let server = req.body.server;
 
-            let exec = process.env.ROOT_PATH + '\\ssh_script\\operation_script.sh ' + server + ' ' + operation;
+            let exec = process.env.ROOT_PATH + '/ssh_script/operation_script.sh ' + server + ' ' + operation;
             
             let script_emitter = new my_emitter();
 

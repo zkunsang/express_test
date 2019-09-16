@@ -28,7 +28,7 @@ test_export_chapter = {
             for (var i in file_list) {
                 let file = file_list[i];
 
-                let file_split_list = file.filename.split('\\');
+                let file_split_list = file.filename.split('/');
                 let file_name = file_split_list[file_split_list.length - 1];
                 file_name_list.push({key: file_name});
             }
@@ -48,7 +48,7 @@ test_export_chapter = {
                 }
                 else {
 
-                    fs.appendFile(process.env.ROOT_PATH + "\\temp\\test_file.txt", data.Prefix + " : " + data.Contents.length + "\n", function(err) {
+                    fs.appendFile(process.env.ROOT_PATH + "/temp/test_file.txt", data.Prefix + " : " + data.Contents.length + "\n", function(err) {
                         if(err) {
                             return console.log(err);
                         }

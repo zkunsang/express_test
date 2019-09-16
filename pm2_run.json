@@ -4,6 +4,7 @@
     "script"      : "app.js",
     "watch"       : true,
     "exec_mode" : "cluster",
+    "ignore_watch" : ["node_modules", "output_folder","ssh_script"],
     "instances" : 2,
     "env": {
       "NODE_ENV" : "local"

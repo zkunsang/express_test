@@ -80,7 +80,7 @@ async function del_resource(db_game, log_object, s3_source) {
 
     for ( var i = 0 ; i < 100 ; i ++ ) {
         let list_object_emitter = new event_emitter();
-        let list_object = s3_source.listObjects({Bucket: s3_config.source.bucket, Prefix: String(i) + String('/')}, async function(err, data) {
+        s3_source.listObjects({Bucket: s3_config.source.bucket, Prefix: String(i) + String('/')}, async function(err, data) {
             if( err ) {
                 log_object.archive_log("list_object error", err, err.stack);
             }

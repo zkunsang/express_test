@@ -50,8 +50,8 @@ path_util.get_route_url_from_file_list = function(base_dir, route_file_list) {
     return route_url;
 };
 
-// let base_dir = "D:\\express_test\\routes";
-// let file_list = [];
-// path_util.get_file_list(file_list, base_dir);
-// let url_list = path_util.get_route_url_from_file_list(base_dir, file_list);
+path_util.relative = function(base_dir, target_dir) {
+    return path.relative(base_dir, target_dir)
+}
+
 module.exports = path_util;

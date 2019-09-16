@@ -40,15 +40,19 @@ test_export_chapter = {
             await fsPromises.mkdir(process.env.ROOT_PATH + title_folder, { recursive: true });
             await fsPromises.mkdir(process.env.ROOT_PATH + title_asset_folder, { recursive: true });
 
+            let resource_list = (await db_game.query('select * from RESOURCE'))[0];
+            let title_list = (await db_game.query('select * from TITLE'))[0];
+            let title_asset_list = (await db_game.query('select * from RESOURCE_OF_TITLE'))[0];
+
             await make_resource(db_game, log_object, s3_source ,{
-                table_query: 'select * from RESOURCE',
+                resource_list: resource_list,
                 backup_folder: resource_folder,
                 table_map_key: 'url',
             });
             
             
             await make_common_resource(db_game, log_object, s3_source, {
-                table_query: 'select * from TITLE',
+                resource_list: title_list,
                 backup_folder: title_folder,
                 table_map_key: 'thumb',
                 prefix: 'title/'
@@ -56,14 +60,13 @@ test_export_chapter = {
             
             // 타이틀 어셋 리소스
 
-            /**
             await make_common_resource(db_game, log_object, s3_source, {
-                table_query: 'select * from RESOURCE_OF_TITLE',
+                resource_list: title_asset_list,
                 backup_folder: title_asset_folder,
                 table_map_key: 'url',
                 prefix: 'title_asset/'
             });
-             */
+
             // 일반 리소스
             res.send({success: "success"});
         }
@@ -81,16 +84,13 @@ test_export_chapter = {
 module.exports = test_export_chapter;
 
 async function make_resource(db_game, log_object, s3_source, options) {
-    if ( options.table_query == undefined ) { throw new Error("options.table_query") };
     if ( options.backup_folder == undefined ) { throw new Error("options.backup_folder") };
     if ( options.table_map_key == undefined ) { throw new Error("options.table_map_key") };
 
-    let table_query = options.table_query;
+    let resource_list = options.resource_list;
     let table_map_key = options.table_map_key;
     let backup_folder = options.backup_folder;
-    
 
-    let resource_list = (await db_game.query(table_query))[0];
     let resource_arranged_map = resource_list.$toMap(table_map_key);
 
     let delete_file_list = [];
@@ -130,9 +130,11 @@ async function make_resource(db_game, log_object, s3_source, options) {
                     read_steam.pipe(write_stream);
 
                     try {await backup_file_promise;}catch (err) {console.log(err);}
+                    
                 }
                 
                 list_object_emitter.emit("file_down_end", 1234);
+                
             }
         })
 
@@ -150,17 +152,15 @@ async function make_resource(db_game, log_object, s3_source, options) {
 
 
 async function make_common_resource(db_game, log_object, s3_source, options) {
-    if ( options.table_query == undefined ) { throw new Error("options.table_query") };
     if ( options.backup_folder == undefined ) { throw new Error("options.backup_folder") };
     if ( options.table_map_key == undefined ) { throw new Error("options.table_map_key") };
     if ( options.prefix == undefined ) { throw new Error("options.prefix") };
 
-    let table_query = options.table_query;
     let table_map_key = options.table_map_key;
     let backup_folder = options.backup_folder;
     let prefix = options.prefix;
     
-    let resource_list = (await db_game.query(table_query))[0];
+    let resource_list = options.resource_list;
     let resource_arranged_map = resource_list.$toMap(table_map_key);
 
     let delete_file_list = [];

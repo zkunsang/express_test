@@ -17,8 +17,8 @@ test_mysql_export = {
         let source_game_config = null;
         let target_game_config = null;
         if ( node_env == "local" ) {
-            source_game_config = require(process.env.ROOT_PATH + '\\App\\db_config\\local').game;
-            target_game_config = require(process.env.ROOT_PATH + '\\App\\db_config\\debug').game;
+            source_game_config = require(process.env.ROOT_PATH + '/App/db_config/local').game;
+            target_game_config = require(process.env.ROOT_PATH + '/App/db_config/debug').game;
         }
         else if ( node_env == "debug") {
 
@@ -47,7 +47,7 @@ test_mysql_export = {
                     }
                 },
 
-                dumpToFile: process.env.ROOT_PATH + '\\output_folder\\export_mysql\\'  + game_export_name,
+                dumpToFile: process.env.ROOT_PATH + '/output_folder/export_mysql/'  + game_export_name,
             });
             
             

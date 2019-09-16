@@ -1,7 +1,5 @@
 var fs = require('fs');
 
-
-
 let s3_config = require('../../App/s3_config');
 let path_util = require("../../custom_util/path_util");
 
@@ -35,6 +33,8 @@ test_execute_script = {
 
             let file_list = [];
             path_util.get_file_list(file_list, base_dir);
+            
+            
 
             for (var i in file_list) {
                 
@@ -44,10 +44,19 @@ test_execute_script = {
                 let file_split_list = file_full_path.split('\\');
                 let file_name = file_split_list[file_split_list.length - 1];
 
+                let relative_path = path_util.relative(base_dir, file_full_path);
+
+                if ( !(file_split_list.length <= 7) )
+                    continue;
+
+                let s3_url = version_key + relative_path
+                s3_url = s3_url.replace('\\', '/');
+
+                console.log( s3_url ) ;
                 var param = {
                     // 테섭에 일단 붓기
                     Bucket: s3_config.source.bucket,
-                    Key: version_key + file_name,
+                    Key: s3_url,
                     Body:fs.createReadStream(file_full_path),
                     //'ACL':'public-read',
                     //'ContentType':'image/png'
@@ -58,13 +67,12 @@ test_execute_script = {
 
                 // 요거 풀면 전체 파일 다 업로드
                 // 일단 테스트로 1개만 올려봄
-                break;
             }
 
             res.send("completed");
         }
         catch( err ) {
-            next( err );
+            console.error( err );
         }
     }
 }

@@ -13,13 +13,13 @@ db_import = {
         let source_game_config = null;
         let target_game_config = null;
         if ( node_env == "local" ) {
-            game_config = require(process.env.ROOT_PATH + '\\App\\db_config\\local').game;
+            game_config = require(process.env.ROOT_PATH + '/App/db_config/local').game;
         }
         else if ( node_env == "debug") {
-            game_config = require(process.env.ROOT_PATH + '\\App\\db_config\\local').game;
+            game_config = require(process.env.ROOT_PATH + '/App/db_config/local').game;
         }
         else if ( node_env == "debug") {
-            game_config = require(process.env.ROOT_PATH + '\\App\\db_config\\local').game;
+            game_config = require(process.env.ROOT_PATH + '/App/db_config/local').game;
         }
 
         try {
@@ -33,7 +33,7 @@ db_import = {
                         console.log(err.message)
                     }
                 }                
-            ).import(process.env.ROOT_PATH + "\\output_folder\\export_mysql\\debug\\game_20190909_121654.sql").then(()=> {
+            ).import(process.env.ROOT_PATH + "/output_folder/export_mysql/debug/game_20190909_121654.sql").then(()=> {
                 console.log('all statements have been executed')
             })
 
