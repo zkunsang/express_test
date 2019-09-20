@@ -11,7 +11,8 @@ var file_manager = {
         await fsPromises.mkdir(process.env.ROOT_PATH + '/output_folder/export_mysql/local', { recursive: true });
         await fsPromises.mkdir(process.env.ROOT_PATH + '/output_folder/export_mysql/debug', { recursive: true });
         await fsPromises.mkdir(process.env.ROOT_PATH + '/output_folder/export_mysql/production', { recursive: true });
-
+        await fsPromises.mkdir(process.env.ROOT_PATH + '/output_folder/meta_data', { recursive: true });
+        
         return this;
     }
 }

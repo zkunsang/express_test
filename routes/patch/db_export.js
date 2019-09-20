@@ -15,9 +15,10 @@ test_mysql_export = {
         let node_env = process.env.NODE_ENV;
         let source_game_config = null;
         let target_game_config = null;
+
+        // 테스트 용도
         if ( node_env == "local" ) {
             source_game_config = require(process.env.ROOT_PATH + '/App/db_config/local').game;
-            target_game_config = require(process.env.ROOT_PATH + '/App/db_config/debug').game;
         }
         else if ( node_env == "debug") {
             source_game_config = require(process.env.ROOT_PATH + '/App/db_config/debug').game;

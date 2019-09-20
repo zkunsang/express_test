@@ -17,7 +17,7 @@ test_execute_script = {
             AWS.config.region = 'ap-northeast-2';
 
             var s3_source = new AWS.S3(s3_config.source);
-            var s3_target = new AWS.S3(s3_config.s3_target);
+            var s3_target = new AWS.S3(s3_config.target);
 
             let version = await get_version(db_game, log_object);
 
@@ -29,7 +29,7 @@ test_execute_script = {
             let version_key = device_type + "/" + version_flag + "/";
             
             // 임시 
-            let base_dir = process.env.ROOT_PATH + '/output_folder/cdn_init_data/' + version_key;
+            let base_dir = process.env.ROOT_PATH + '/output_folder/export_resource/' + version_key;
 
             let file_list = [];
             path_util.get_file_list(file_list, base_dir);
@@ -46,27 +46,20 @@ test_execute_script = {
 
                 let relative_path = path_util.relative(base_dir, file_full_path);
 
-                if ( !(file_split_list.length <= 7) )
-                    continue;
+                // if ( !(file_split_list.length <= 7) )
+                //     continue;
 
                 let s3_url = version_key + relative_path
                 s3_url = s3_url.replace('\\', '/');
 
-                console.log( s3_url ) ;
                 var param = {
-                    // 테섭에 일단 붓기
-                    Bucket: s3_config.source.bucket,
+                    Bucket: s3_config.target.bucket,
                     Key: s3_url,
                     Body:fs.createReadStream(file_full_path),
-                    //'ACL':'public-read',
-                    //'ContentType':'image/png'
                 }
 
-                // 테섭에 하나 올려보자
-                const result = await s3_source.putObject(param).promise();
-
-                // 요거 풀면 전체 파일 다 업로드
-                // 일단 테스트로 1개만 올려봄
+                const result = await s3_target.putObject(param).promise();
+                console.log(result);
             }
 
             res.send("completed");

@@ -24,7 +24,7 @@ test_execute_script = {
             let device_type = "android"
             let version = await get_version(db_game, log_object);
             
-            let version_flag = 'v' + String(pad(1,6));
+            let version_flag = 'v' + String(pad(version,6));
 
             let version_path = device_type + "/" + version_flag + "/";
             let base_path = '/output_folder/export_resource/';

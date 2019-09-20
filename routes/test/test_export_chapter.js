@@ -51,7 +51,7 @@ test_export_chapter = {
                     resource: null
                 }
 
-                //temp.resource = ret_title_resource;
+                temp.resource = ret_title_resource;
 
                 //fs.writeFileSync(process.env.ROOT_PATH + `/temp/${file_name}.json`, JSON.stringify(ret_title_resource,null,'\t'), 'utf8');    
                 fs.writeFileSync(process.env.ROOT_PATH + `/output_folder/title_data/${file_name}.json`, JSON.stringify(temp, null,'\t'), 'utf8');    

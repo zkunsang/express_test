@@ -78,7 +78,6 @@ async function get_object_list(s3_source, s3_config, params) {
     return resource_list;
 }
 
-
 async function get_version(db_game, log_object) {
     let version = 0;
     try { 
